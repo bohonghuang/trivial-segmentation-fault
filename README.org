@@ -1,0 +1,19 @@
+#+TITLE: trivial-segmentation-fault
+When debugging applications that heavily use CFFI, it is common to need to access a foreign memory block that may be invalid,
+but we do not want segmentation faults to halt the debugger.
+* Usage
+This library provides ~ignore-segmentation-fault~ and the ~segmentation-fault~ condition in a portable way for ignoring or trapping segmentation faults:
+
+#+BEGIN_SRC lisp
+  (use-package :trivial-segmentation-fault)
+
+  (ignore-segmentation-fault
+    #| Do something dangerous here... |#)
+
+  (handler-case
+      (progn #| Do something dangerous here... |#)
+    (segmentation-fault ()
+      #| Handle segmentation fault here... |#))
+#+END_SRC
+
+Currently, SBCL, CCL, ECL, and Clasp are supported.
